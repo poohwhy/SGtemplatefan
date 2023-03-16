@@ -1,0 +1,207 @@
+# Script for setting fan speed, and sending action commands
+bedroom_fan_set_speed:
+  alias: bedroom_fan_set_speed
+  sequence:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.bedroom_fan_percentage
+    data:
+      value: '{{ percentage }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '0.0'
+      sequence:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.bedroom_fan_switch
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '20.0'
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 1
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '40.0'
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 2
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '60.0'
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 3
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '80.0'
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 4
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '100.0'
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 5
+    default: []
+  mode: single
+
+# Script for turning fan on, and setting speed as displayed in HA
+bedroom_fan_turn_on:
+  alias: bedroom_fan_turn_on
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '0.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 2
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.bedroom_fan_percentage
+        data:
+            value: 40
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '20.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 1
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '40.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 2
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '60.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 3
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '80.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 4
+    - conditions:
+      - condition: state
+        entity_id: input_number.bedroom_fan_percentage
+        state: '100.0'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.bedroom_fan_switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: remote.send_command
+        target:
+          entity_id: remote.broadlink
+        data:
+          device: bedroom_fan
+          command: speed 5
+    default: []
+  mode: single
