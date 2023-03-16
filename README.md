@@ -17,4 +17,4 @@ The behaviour of the fan is as follows:
     - Turning on the fan will first turn on the smart switch, then send the current fan speed percentage in HA via the remote to the fan. 
     - Turning on the fan when the fan speed percentage is 0% will turn on the smart switch, and send speed 2 via the remote to the fan.
  
- Comments are welcome, especially if the scripts can be optimised. 
+ Comments are welcome, especially if the scripts can be optimised. I am quite new to HA and Github.
