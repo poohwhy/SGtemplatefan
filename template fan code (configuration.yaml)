@@ -1,0 +1,27 @@
+# Keep track of fan speeds
+input_number:
+  bedroom_fan_percentage:
+    name: Bedroom Fan Percentage
+    min: 0
+    max: 100
+
+# Template fans
+fan:
+  - platform: template
+    fans:
+      bedroom_fan:
+        friendly_name: "Bedroom fan"
+        unique_id: bedroom_fan
+        value_template: "{{ states('switch.bedroom_fan_switch') }}"
+        percentage_template: "{{ states('input_number.bedroom_fan_percentage') }}"
+        turn_on:
+          service: script.bedroom_fan_turn_on
+        turn_off:
+          service: switch.turn_off
+          target:
+            entity_id: switch.bedroom_fan_switch
+        set_percentage:
+          service: script.bedroom_fan_set_speed
+          data:
+            percentage: "{{ percentage }}"
+        speed_count: 5
